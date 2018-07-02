@@ -1,0 +1,56 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended"
+  ],
+  "env": {
+    "browser": false,
+    "node": true
+  },
+  "globals": {
+    "fetch": true,
+    "window": true,
+    "__DEV__": true,
+    "navigator": true,
+    "ReactElement": true,
+    "requestAnimationFrame": true,
+    "jest": true,
+    "Iterable": true,
+    "Action": true,
+    "FormData": true
+  },
+  "plugins": [
+    "react",
+    "react-native",
+    "flowtype"
+  ],
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  },
+  "rules": {
+    "comma-dangle": 0,
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "no-console": 1,
+    "camelcase": 0,
+    "react-native/no-unused-styles": 2,
+    "no-return-assign": 0,
+    "react/jsx-boolean-value": 0,
+    "react/sort-comp": 0,
+    "react/prop-types":1,
+    "arrow-body-style": 0,
+    "no-nested-ternary": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/extensions": 0,
+    "import/no-unresolved": 0,
+    "react/jsx-curly-spacing": [2, {"when": "never", "allowMultiline": false}],
+    "react/jsx-curly-brace-presence": 0,
+    "max-len": ["error", { "code": 100 }],
+    "import/prefer-default-export": 0,
+    "padded-blocks": "off",
+    "global-require": "off"
+  }
+}
