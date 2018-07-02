@@ -1,0 +1,1 @@
+export { WelcomePlaceholder } from './WelcomePlaceholder';

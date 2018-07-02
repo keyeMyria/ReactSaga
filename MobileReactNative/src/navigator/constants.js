@@ -1,0 +1,49 @@
+// @flow
+
+export const SPLASH_SCENE: string = 'app.SplashScene';
+export const FAVORITE_SCENE: string = 'app.FavoriteScene';
+export const FAVORITE_PROVIDER_SCENE: string = 'app.FavoriteProviderScene';
+export const SEARCH_SCENE: string = 'app.SearchScene';
+export const CALENDAR_SCENE: string = 'app.CalendarScene';
+export const PROFILE_SCENE: string = 'app.ProfileScene';
+export const SETTING_SCENE: string = 'app.SettingScene';
+export const WELCOME_SCENE: string = 'app.WelcomeScene';
+export const LOGIN_SCENE: string = 'app.LoginScene';
+export const REGISTER_SCENE: string = 'app.RegisterScene';
+export const FORGOT_PASSWORD_SCENE: string = 'app.ForgotPasswordScene';
+export const ADD_PROFILE_SCENE: string = 'app.AddProfileScene';
+export const EDIT_INSURANCE_SCENE: string = 'app.EditInsuranceScene';
+export const CHANGE_PASSWORD_SCENE: string = 'app.ChangePasswordScene';
+export const PROVIDER_DETAIL_SCENE: string = 'app.ProviderDetailScene';
+export const CALENDAR_WEEK_SCENE: string = 'app.CalendarWeekScene';
+export const RESET_PASSWORD_SCENE: string = 'app.ResetPasswordScene';
+export const INSURANCES_SCENE: string = 'app.InsurancesScene';
+export const REVIEW_SCENE: string = 'app.ReviewScene';
+export const APPOINTMENT_DETAIL_SCENE: string = 'app.AppointmentDetailScene';
+export const APPOINTMENT_PREVIEW_SCENE: string = 'app.AppointmentPreviewScene';
+export const SCAN_DOCUMENT_SCENE: string = 'app.ScanDocumentScene';
+export const CAMERA_ROLL_SCENE: string = 'app.CameraRollScene';
+export const INVITE_FRIEND_SCENE: string = 'app.InviteFriendScene';
+export const PAYMENT_METHOD_SCENE: string = 'app.PaymentMethodScene';
+export const EDIT_PAYMENT_METOD_SCENE: string = 'app.EditPaymentMethodScene';
+export const PAYMENT_DETAILS_SCENE: string = 'app.PaymentDetailsScene';
+export const CARD_DETAILS_SCENE: string = 'app.CardDetailsScene';
+export const REDEEM_SCENE: string = 'app.RedeemScene';
+export const SMS_SCENE: string = 'app.SmsScene';
+export const FAMILY_MEMBER_SCENE: string = 'app.FamilyMemberScene';
+export const PRIMARY_CARE_DOCTOR: string = 'app.PrimaryCareDoctorScene';
+export const PRIMARY_CARE_DOCTOR_DETAIL: string = 'app.PrimaryCareDoctorDetailScene';
+export const QR_SCAN_SCENE: string = 'app.QRScanScene';
+export const QR_SCAN_PASSWORD_SCENE: string = 'app.QRScanPasswordScene';
+
+// Dialogs
+export const CONFIRM_DIALOG: string = 'app.ConfirmDialog';
+export const CONFIRM_TIME_DIALOG: string = 'app.ConfirmTimeDialog';
+export const SELECT_TIME_DIALOG: string = 'app.SelectTimeDialog';
+export const REQUEST_PROPOSE_DIALOG: string = 'app.RequestProposeDialog';
+export const REQUEST_ACTION_DIALOG: string = 'app.RequestActionDialog';
+export const REQUEST_PROPOSE_TIME_DIALOG: string = 'app.RequestProposeTimeDialog';
+export const REQUEST_UPDATED_DIALOG: string = 'app.RequestUpdatedDialog';
+export const REQUEST_SUCCESS_DIALOG: string = 'app.RequestSuccessDialog';
+export const PROVIDER_FILTER_DIALOG: string = 'app.ProviderFilterDialog';
+export const QRCODE_ENTER_DIALOG: string = 'app.QRCodeEnterDialog';

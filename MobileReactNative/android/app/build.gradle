@@ -1,0 +1,288 @@
+apply plugin: "com.android.application"
+apply plugin: 'com.github.triplet.play'
+project.ext.envConfigFiles = [
+    debug: ".env",
+    release: ".env.production",
+    anycustombuildlowercase: ".env",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+import com.android.build.OutputFile
+
+/**
+ * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
+ * and bundleReleaseJsAndAssets).
+ * These basically call `react-native bundle` with the correct arguments during the Android build
+ * cycle. By default, bundleDebugJsAndAssets is skipped, as in debug/dev mode we prefer to load the
+ * bundle directly from the development server. Below you can see all the possible configurations
+ * and their defaults. If you decide to add a configuration block, make sure to add it before the
+ * `apply from: "../../node_modules/react-native/react.gradle"` line.
+ *
+ * project.ext.react = [
+ *   // the name of the generated asset file containing your JS bundle
+ *   bundleAssetName: "index.android.bundle",
+ *
+ *   // the entry file for bundle generation
+ *   entryFile: "index.android.js",
+ *
+ *   // whether to bundle JS and assets in debug mode
+ *   bundleInDebug: false,
+ *
+ *   // whether to bundle JS and assets in release mode
+ *   bundleInRelease: true,
+ *
+ *   // whether to bundle JS and assets in another build variant (if configured).
+ *   // See http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Build-Variants
+ *   // The configuration property can be in the following formats
+ *   //         'bundleIn${productFlavor}${buildType}'
+ *   //         'bundleIn${buildType}'
+ *   // bundleInFreeDebug: true,
+ *   // bundleInPaidRelease: true,
+ *   // bundleInBeta: true,
+ *
+ *   // whether to disable dev mode in custom build variants (by default only disabled in release)
+ *   // for example: to disable dev mode in the staging build type (if configured)
+ *   devDisabledInStaging: true,
+ *   // The configuration property can be in the following formats
+ *   //         'devDisabledIn${productFlavor}${buildType}'
+ *   //         'devDisabledIn${buildType}'
+ *
+ *   // the root of your project, i.e. where "package.json" lives
+ *   root: "../../",
+ *
+ *   // where to put the JS bundle asset in debug mode
+ *   jsBundleDirDebug: "$buildDir/intermediates/assets/debug",
+ *
+ *   // where to put the JS bundle asset in release mode
+ *   jsBundleDirRelease: "$buildDir/intermediates/assets/release",
+ *
+ *   // where to put drawable resources / React Native assets, e.g. the ones you use via
+ *   // require('./image.png')), in debug mode
+ *   resourcesDirDebug: "$buildDir/intermediates/res/merged/debug",
+ *
+ *   // where to put drawable resources / React Native assets, e.g. the ones you use via
+ *   // require('./image.png')), in release mode
+ *   resourcesDirRelease: "$buildDir/intermediates/res/merged/release",
+ *
+ *   // by default the gradle tasks are skipped if none of the JS files or assets change; this means
+ *   // that we don't look at files in android/ or ios/ to determine whether the tasks are up to
+ *   // date; if you have any other folders that you want to ignore for performance reasons (gradle
+ *   // indexes the entire tree), add them here. Alternatively, if you have JS files in android/
+ *   // for example, you might want to remove it from here.
+ *   inputExcludes: ["android/**", "ios/**"],
+ *
+ *   // override which node gets called and with what additional arguments
+ *   nodeExecutableAndArgs: ["node"],
+ *
+ *   // supply additional arguments to the packager
+ *   extraPackagerArgs: []
+ * ]
+ */
+
+project.ext.react = [
+    entryFile: "index.android.js"
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
+
+/**
+ * Set this to true to create two separate APKs instead of one:
+ *   - An APK that only works on ARM devices
+ *   - An APK that only works on x86 devices
+ * The advantage is the size of the APK is reduced by about 4MB.
+ * Upload all the APKs to the Play Store and people will download
+ * the correct one based on the CPU architecture of their device.
+ */
+def enableSeparateBuildPerCPUArchitecture = false
+
+/**
+ * Run Proguard to shrink the Java bytecode in release builds.
+ */
+def enableProguardInReleaseBuilds = false
+
+buildscript {
+  repositories {
+    maven { url 'https://maven.fabric.io/public' }
+  }
+  dependencies {
+    // The Fabric Gradle plugin uses an open ended version to react
+    // quickly to Android tooling updates
+    classpath 'io.fabric.tools:gradle:1.+'
+  }
+}
+apply plugin: 'io.fabric'
+repositories {
+  maven { url 'https://maven.fabric.io/public' }
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.1'
+    dexOptions {
+       javaMaxHeapSize "4g"
+       preDexLibraries = false
+    }
+    playAccountConfigs {
+        defaultAccountConfig {
+            serviceAccountEmail = MYAPP_GOOGLE_SERVICE_ACCOUNT_EMAIL
+            pk12File = file(MYAPP_GOOGLE_PLAY_SERVICE_ACCOUNT_KEY_FILE)
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.openmed"
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode buildVersionCode()
+        versionName MYAPP_RELEASE_VERSION_NAME
+        vectorDrawables.useSupportLibrary = true
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        playAccountConfig = playAccountConfigs.defaultAccountConfig
+        multiDexEnabled true
+    }
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk false  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+            ndk {
+                abiFilters "armabi-v7a", "armabi" // Should do the trick.
+            }
+        }
+        debug {
+            // Disable fabric build ID generation for debug builds
+            ext.enableCrashlytics = false
+            ndk {
+                abiFilters "armabi-v7a", "armabi" // Should do the trick.
+            }
+        }
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+    }
+    aaptOptions {
+        cruncherEnabled = false
+    }
+    // applicationVariants are e.g. debug, release
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            // For each separate APK per architecture, set a unique version code as described here:
+            // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
+            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def abi = output.getFilter(OutputFile.ABI)
+            if (abi != null) {  // null for the universal-debug, universal-release variants
+                output.versionCodeOverride =
+                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+            }
+        }
+    }
+}
+
+play {
+    track = MYAPP_GOOGLE_PLAY_TRACK
+    // untrackOld = true
+    uploadImages = true
+}
+
+dependencies {
+    compile project(':react-native-branch')
+    compile project(':react-native-mail-compose') // Add this
+    compile project(':react-native-sms')
+    compile project(':react-native-contacts')
+    compile project(':react-native-navigation')
+    compile (project(':react-native-fcm')){
+        exclude group: "com.google.firebase"
+    }
+    compile 'com.google.firebase:firebase-messaging:11.+'
+    compile ("com.google.firebase:firebase-core:11.+") {
+      force = true;
+   }
+    compile project(':react-native-fetch-blob')
+    compile project(':react-native-config')
+    compile project(':react-native-fbsdk')
+    compile (project(':react-native-device-info')){
+        exclude group: "com.google.android.gms"
+    }
+    compile project(':react-native-fabric')
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
+    compile project(':react-native-calendar-events')
+    compile project(':react-native-image-crop-picker')
+    compile(project(':react-native-maps')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-maps'
+    }
+    compile ("com.google.android.gms:play-services-base:11.+") {
+      force = true;
+   }
+    compile ("com.google.android.gms:play-services-maps:11.+") {
+      force = true;
+   }
+    compile project(':react-native-linear-gradient')
+    compile project(':react-native-i18n')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-exit-app')
+    compile project(':react-native-fast-image')
+    compile(project(':react-native-geolocation-service')) {
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
+    }
+    compile (project(':react-native-camera')) {
+      exclude group: "com.google.android.gms"
+        compile 'com.android.support:exifinterface:25.+'
+    }
+    compile ("com.google.android.gms:play-services-vision:11.+") {
+      force = true;
+    }
+    compile 'com.google.android.gms:play-services-location:11.+'
+    compile project(':react-native-view-shot')
+    compile fileTree(dir: "libs", include: ["*.jar"])
+    compile 'com.android.support:appcompat-v7:26'
+    compile ("com.facebook.react:react-native:0.53.3") { force = true }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.3.0'
+            }
+        }
+    }
+}
+
+// Run this once to be able to run the application with BUCK
+// puts all compile dependencies into folder libs for BUCK to use
+task copyDownloadableDepsToLibs(type: Copy) {
+    from configurations.compile
+    into 'libs'
+}
+apply plugin: 'com.google.gms.google-services'

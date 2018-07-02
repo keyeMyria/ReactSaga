@@ -1,0 +1,1 @@
+export { OMImage } from './OMImage';

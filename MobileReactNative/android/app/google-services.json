@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "852219021425",
+    "firebase_url": "https://openmed-3f1dc.firebaseio.com",
+    "project_id": "openmed-3f1dc",
+    "storage_bucket": "openmed-3f1dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852219021425:android:074027857b3481b7",
+        "android_client_info": {
+          "package_name": "com.openmed.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852219021425-kcaseo3ig02s2a4fb1un1uoisqghtr5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5WVjj_VUj8RSvbQ8TCLldGFVJ08sOcb8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852219021425:android:36118409144d0589",
+        "android_client_info": {
+          "package_name": "com.openmed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852219021425-f2jdl5b03e6jsfes817sf928kvc7fahq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.openmed",
+            "certificate_hash": "fac18ec0ebfd55e70bb57a61454baac1b8ee767f"
+          }
+        },
+        {
+          "client_id": "852219021425-7u7cdmkuth2usvaq3acbu0qhn6absbe2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.openmed",
+            "certificate_hash": "7e5c768b6028ca717991e324fa4df60faab57582"
+          }
+        },
+        {
+          "client_id": "852219021425-kcaseo3ig02s2a4fb1un1uoisqghtr5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5WVjj_VUj8RSvbQ8TCLldGFVJ08sOcb8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852219021425-kcaseo3ig02s2a4fb1un1uoisqghtr5e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

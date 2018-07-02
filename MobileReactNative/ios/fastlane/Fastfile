@@ -1,0 +1,170 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.58.0"
+
+default_platform :ios
+
+platform :ios do
+  before_all do
+    # ENV["SLACK_URL"] = "https://hooks.slack.com/services/..."
+
+    set_info_plist_value(path: "OpenMed/Info.plist", key: "ITSAppUsesNonExemptEncryption ", value: "false")
+
+    $xc_project_path = './OpenMed.xcodeproj'
+    $bundle_name = 'com.openmed.mobile.OpenMed'
+    $username = 'omadmin@openmed.com'
+    $signer = 'iPhone Developer'
+
+    update_app_identifier(
+      plist_path: "OpenMed/Info.plist",
+      app_identifier:$bundle_name
+    )
+
+    update_project_team(
+      path:$xc_project_path,
+      teamid: "HHN5Y9DWEV"
+    )
+
+    cocoapods(clean: true)
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    scan
+  end
+
+  lane :pull do
+    cert(
+      username:$username,
+    )
+    sigh(
+      app_identifier: $bundle_name,
+      username:$username,
+    )
+    enable_automatic_code_signing(
+      path:$xc_project_path,
+      use_automatic_signing:true,
+    )
+
+    gym(
+      scheme: 'OpenMed',
+      configuration: 'Release',
+      suppress_xcode_output: true,
+      export_method: 'app-store',
+      silent: true,
+      clean: true,
+      include_bitcode: true,
+      include_symbols: true,
+      workspace:'./OpenMed.xcworkspace',
+      export_options: {
+        signingStyle: "automatic"
+      },
+    )
+
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    cert(
+      username:$username,
+    )
+    sigh(
+      app_identifier: $bundle_name,
+      username:$username,
+    )
+    enable_automatic_code_signing(
+      path:$xc_project_path,
+      use_automatic_signing:true,
+    )
+
+    gym(
+      scheme: 'OpenMed',
+      configuration: 'Release',
+      suppress_xcode_output: true,
+      export_method: 'app-store',
+      silent: true,
+      clean: true,
+      include_bitcode: true,
+      include_symbols: true,
+      workspace:'./OpenMed.xcworkspace',
+      export_options: {
+        signingStyle: "automatic"
+      },
+    )
+
+    pilot
+
+    # sh "your_script.sh"
+    # You can also use other beta testing services here (run `fastlane actions`)
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :release do
+    cert(
+      username:$username,
+    )
+    sigh(
+      app_identifier: $bundle_name,
+      username:$username,
+    )
+    enable_automatic_code_signing(
+      path:$xc_project_path,
+      use_automatic_signing:true,
+    )
+
+    gym(
+      scheme: 'OpenMed',
+      configuration: 'Release',
+      suppress_xcode_output: true,
+      export_method: 'app-store',
+      silent: true,
+      clean: true,
+      include_bitcode: true,
+      include_symbols: true,
+      workspace:'./OpenMed.xcworkspace',
+      export_options: {
+        signingStyle: "automatic"
+      },
+    )
+
+    pilot
+    #deliver(force: true)
+    # frameit
+  end
+
+  # You can define as many lanes as you want
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+
+    # slack(
+    #   message: "Successfully deployed new App Update."
+    # )
+  end
+
+  error do |lane, exception|
+    # slack(
+    #   message: exception.message,
+    #   success: false
+    # )
+  end
+end
+
+
+# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
+# All available actions: https://docs.fastlane.tools/actions
+
+# fastlane reports which actions are used. No personal data is recorded. 
+# Learn more at https://github.com/fastlane/fastlane#metrics
